@@ -9,8 +9,7 @@
           <a 
             :class="($route.name == item.route) ? 'nav-link active' : 'nav-link'"
             class="d-flex align-items-center" 
-            aria-current="page" 
-            href="#">
+            @click="$router.push({name: item.route})">
             <i :class="item.icon" class="fs-6 me-2"></i>
             
             <span>{{ item.title }}</span>
@@ -81,7 +80,7 @@ export default class SideBar extends Vue {
     {
       title: 'Volumes',
       icon: 'bi-hdd-stack',
-      route: 'Instances',
+      route: 'Volumes',
     },
   ];
 
