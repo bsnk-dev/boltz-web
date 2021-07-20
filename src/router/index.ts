@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
-import SignIn from '../views/SignIn.vue'
 
 Vue.use(VueRouter)
 
@@ -28,6 +27,11 @@ const routes: Array<RouteConfig> = [
     path: '/volumes',
     name: 'Volumes',
     component: () => import('../views/Volumes.vue')
+  },
+  {
+    path: '/volume',
+    name: 'Volume',
+    component: () => import('../views/Volume.vue')
   },
 ]
 

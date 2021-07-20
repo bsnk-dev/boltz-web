@@ -37,6 +37,8 @@
         <thead>
           <tr>
             <th scope="col">Name</th>
+            <th scope="col">ID</th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
@@ -47,6 +49,16 @@
             @click="selectionHandler($event, volume)"
           >
             <td>{{ volume.name }}</td>
+            <td>{{ volume._id }}</td>
+            <td>
+              <a
+                @click="$router.push({ name: 'Volume', query: { id: volume._id}})"
+                class="link-primary"
+              >
+                Edit Files
+                <i class="bi bi-chevron-right"></i>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -64,10 +76,6 @@ import {Component, Mixins} from 'vue-property-decorator';
 export default class Volumes extends Mixins(RefreshAppInfo) {
   selected: VolumeI[] = [];
   loaded = false;
-
-  get volumes(): VolumeI {
-    return this.$store.getters.volumes;
-  }
 
   selectionHandler(event: MouseEvent, volume: VolumeI): void {
     if (event.ctrlKey) {
@@ -136,4 +144,20 @@ export default class Volumes extends Mixins(RefreshAppInfo) {
   }
 }
 </script>
+
+<style scoped>
+  a {
+    cursor: pointer;
+    text-decoration: none;
+  }
+
+  .text-white a {
+    color: white;
+  }
+
+  a.disabled {
+    pointer-events: none;
+    opacity: 0.65;
+  }
+</style>
 

@@ -92,7 +92,7 @@
               <a
                 class="link-primary"
                 :class="(getVolume(instance.volumeID).invalid) ? 'disabled' : ''"
-                @click="$router.push({ name: 'volume', query: { id: instance.volumeID }})"
+                @click="$router.push({ name: 'Volume', query: { id: instance.volumeID }})"
               >
                 {{ getVolume(instance.volumeID).name }}
               </a>
@@ -143,14 +143,6 @@ import authFetch from '@/utilities/authFetch';
 export default class Instances extends Mixins(refreshAppInfo) {
   get instances(): InstanceI  {
     return this.$store.getters.instances;
-  }
-
-  get volumes(): VolumeI[] {
-    return this.$store.getters.volumes;
-  }
-
-  getVolume(id: string): VolumeI | {name: string, invalid: true} {
-    return this.volumes.find(volume => volume._id === id) || { name: 'Unknown Volume', invalid: true};
   }
 
   selected: InstanceI[] = [];

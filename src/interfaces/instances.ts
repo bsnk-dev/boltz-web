@@ -21,7 +21,7 @@ export interface VolumeI {
   _id?: string;
   name: string;
 
-  files: string;
+  files: any;
 }
 
 export class Volume {
