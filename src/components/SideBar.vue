@@ -16,52 +16,6 @@
           </a>
         </li>
       </ul>
-
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>Pinned Instances</span>
-        <a class="link-secondary" href="#" aria-label="Add a new report">
-          <i class="bi-plus-circle fs-6 fw-bold"></i>
-        </a>
-      </h6>
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item"
-          v-for="item of pinnedInstances"
-          :key="item.route"
-        >
-          <a 
-            :class="($route.path == item.path) ? 'nav-link active' : 'nav-link'"
-            class="d-flex align-items-center" 
-            aria-current="page" 
-            href="#">
-            <i :class="item.icon" class="fs-6 me-2"></i>
-            
-            <span>{{ item.name }}</span>
-          </a>
-        </li>
-      </ul>
-
-      <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-        <span>Pinned Volumes</span>
-        <a class="link-secondary" href="#" aria-label="Add a new report">
-          <i class="bi-plus-circle fs-6 fw-bold"></i>
-        </a>
-      </h6>
-      <ul class="nav flex-column mb-2">
-        <li class="nav-item"
-          v-for="item of pinnedVolumes"
-          :key="item.route"
-        >
-          <a 
-            :class="($route.path == item.path) ? 'nav-link active' : 'nav-link'"
-            class="d-flex align-items-center" 
-            aria-current="page" 
-            href="#">
-            <i :class="item.icon" class="fs-6 me-2"></i>
-            
-            <span>{{ item.name }}</span>
-          </a>
-        </li>
-      </ul>
     </div>
   </nav>
 </template>

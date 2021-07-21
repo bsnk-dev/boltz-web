@@ -1,5 +1,5 @@
 <script lang="ts">
-import { VolumeI } from '@/interfaces/instances';
+import { InstanceI, VolumeI } from '@/interfaces/instances';
 import authFetch from '@/utilities/authFetch';
 import {Component, Vue} from 'vue-property-decorator';
 
@@ -7,6 +7,10 @@ import {Component, Vue} from 'vue-property-decorator';
 export default class RefreshAppInfo extends Vue {
   get volumes(): VolumeI[] {
     return this.$store.getters.volumes;
+  }
+
+  get instances(): InstanceI  {
+    return this.$store.getters.instances;
   }
 
   async getInstances(): Promise<void> {

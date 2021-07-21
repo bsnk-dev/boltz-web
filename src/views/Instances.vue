@@ -126,7 +126,7 @@
 
 <script lang="ts">
 import {Component, Mixins} from 'vue-property-decorator';
-import {InstanceI, VolumeI} from '@/interfaces/instances';
+import {InstanceI} from '@/interfaces/instances';
 import refreshAppInfo from '@/mixins/refreshAppInfo.vue';
 import Modal from 'bootstrap/js/dist/modal';
 
@@ -141,10 +141,6 @@ import authFetch from '@/utilities/authFetch';
   }
 })
 export default class Instances extends Mixins(refreshAppInfo) {
-  get instances(): InstanceI  {
-    return this.$store.getters.instances;
-  }
-
   selected: InstanceI[] = [];
   loaded = false;
 

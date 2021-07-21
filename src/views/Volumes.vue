@@ -47,6 +47,7 @@
             :key="volume.name"
             :class="(selected.includes(volume)) ? 'bg-primary text-white' : ''"
             @click="selectionHandler($event, volume)"
+            @dblclick="$router.push({ name: 'Volume', query: { id: volume._id}})"
           >
             <td>{{ volume.name }}</td>
             <td>{{ volume._id }}</td>
@@ -123,6 +124,8 @@ export default class Volumes extends Mixins(RefreshAppInfo) {
   }
 
   async deleteVolumes(selected: VolumeI[]): Promise<void> {
+    if (!confirm('Are you sure you want to delete the selected volumes?')) return;
+
     for (const volume of selected) {
       await authFetch(`${this.$store.state.adminAPIURL}/admin/deleteVolume`, {
         method: 'POST',

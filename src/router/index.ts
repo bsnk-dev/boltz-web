@@ -33,6 +33,11 @@ const routes: Array<RouteConfig> = [
     name: 'Volume',
     component: () => import('../views/Volume.vue')
   },
+  {
+    path: '/logs',
+    name: 'Logs',
+    component: () => import('../views/Logs.vue')
+  },
 ]
 
 const router = new VueRouter({
