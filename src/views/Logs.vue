@@ -34,7 +34,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="log of logs" :key="log._id">
+          <tr 
+            v-for="log of logs" 
+            :key="log._id"
+            :class="{
+              'bg-danger': log.severity === 'error',
+              'text-white': log.severity === 'error',
+              'bg-warning': log.severity === 'warning',
+            }">
             <td>
               {{ log.severity }}
             </td>
@@ -73,7 +80,7 @@ export default class Logs extends Mixins(RefreshAppInfo) {
 
   async loadLogs(instanceID: string): Promise<void> {
     const logs = await authFetch(`${this.$store.state.adminAPIURL}/admin/getLogs?id=${instanceID}`);
-    this.logs = (await logs.json()).sort((a: LogI, b: LogI) => a.timestamp - b.timestamp);
+    this.logs = (await logs.json()).sort((a: LogI, b: LogI) => b.timestamp - a.timestamp);
   }
 
   async mounted(): Promise<void> {
