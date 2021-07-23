@@ -27,6 +27,11 @@ import {Component, Vue} from 'vue-property-decorator';
 export default class SideBar extends Vue {
   items = [
     {
+      title: 'Dashboard',
+      icon: 'bi-house-fill',
+      route: 'Dashboard',
+    },
+    {
       title: 'Instances',
       icon: 'bi-stack',
       route: 'Instances',

@@ -13,152 +13,57 @@
       "
     >
       <h1 class="h2">Dashboard</h1>
-      <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group me-2">
-          <button type="button" class="btn btn-sm btn-outline-secondary">
-            Share
-          </button>
-          <button type="button" class="btn btn-sm btn-outline-secondary">
-            Export
-          </button>
-        </div>
-        <button
-          type="button"
-          class="btn btn-sm btn-outline-secondary dropdown-toggle"
-        >
-          <i class="bi-calendar"></i>
-          This week
-        </button>
-      </div>
     </div>
 
-    <h2>Section title</h2>
-    <div class="table-responsive">
-      <table class="table table-striped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Header</th>
-            <th scope="col">Header</th>
-            <th scope="col">Header</th>
-            <th scope="col">Header</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1,001</td>
-            <td>random</td>
-            <td>data</td>
-            <td>placeholder</td>
-            <td>text</td>
-          </tr>
-          <tr>
-            <td>1,002</td>
-            <td>placeholder</td>
-            <td>irrelevant</td>
-            <td>visual</td>
-            <td>layout</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>data</td>
-            <td>rich</td>
-            <td>dashboard</td>
-            <td>tabular</td>
-          </tr>
-          <tr>
-            <td>1,003</td>
-            <td>information</td>
-            <td>placeholder</td>
-            <td>illustrative</td>
-            <td>data</td>
-          </tr>
-          <tr>
-            <td>1,004</td>
-            <td>text</td>
-            <td>random</td>
-            <td>layout</td>
-            <td>dashboard</td>
-          </tr>
-          <tr>
-            <td>1,005</td>
-            <td>dashboard</td>
-            <td>irrelevant</td>
-            <td>text</td>
-            <td>placeholder</td>
-          </tr>
-          <tr>
-            <td>1,006</td>
-            <td>dashboard</td>
-            <td>illustrative</td>
-            <td>rich</td>
-            <td>data</td>
-          </tr>
-          <tr>
-            <td>1,007</td>
-            <td>placeholder</td>
-            <td>tabular</td>
-            <td>information</td>
-            <td>irrelevant</td>
-          </tr>
-          <tr>
-            <td>1,008</td>
-            <td>random</td>
-            <td>data</td>
-            <td>placeholder</td>
-            <td>text</td>
-          </tr>
-          <tr>
-            <td>1,009</td>
-            <td>placeholder</td>
-            <td>irrelevant</td>
-            <td>visual</td>
-            <td>layout</td>
-          </tr>
-          <tr>
-            <td>1,010</td>
-            <td>data</td>
-            <td>rich</td>
-            <td>dashboard</td>
-            <td>tabular</td>
-          </tr>
-          <tr>
-            <td>1,011</td>
-            <td>information</td>
-            <td>placeholder</td>
-            <td>illustrative</td>
-            <td>data</td>
-          </tr>
-          <tr>
-            <td>1,012</td>
-            <td>text</td>
-            <td>placeholder</td>
-            <td>layout</td>
-            <td>dashboard</td>
-          </tr>
-          <tr>
-            <td>1,013</td>
-            <td>dashboard</td>
-            <td>irrelevant</td>
-            <td>text</td>
-            <td>visual</td>
-          </tr>
-          <tr>
-            <td>1,014</td>
-            <td>dashboard</td>
-            <td>illustrative</td>
-            <td>rich</td>
-            <td>data</td>
-          </tr>
-          <tr>
-            <td>1,015</td>
-            <td>random</td>
-            <td>tabular</td>
-            <td>information</td>
-            <td>text</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="d-flex align-items-center">
+      <h4>Server Load</h4>
+      <button class="btn btn-light ms-2 btn-sm" @click="getServerLoad()">
+        <i class="bi bi-refresh"></i>
+        Refresh
+      </button>
+    </div>
+
+    <h3> {{ (serverLoad.total_heap_size / 1024 / 1024).toFixed(1) }} MB out of {{ (serverLoad.heap_size_limit / 1024 / 1024).toFixed(1) }} MB max</h3>
+
+    <h4 class="mt-5 mb-2">Things to do</h4>
+
+    <div class="d-flex flex-wrap">
+      <div class="card me-2 mb-2" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Instances</h5>
+          <p class="card-text">Create, modify, and explore your VM instances.</p>
+          <a href="#" class="btn btn-primary">Go there</a>
+        </div>
+      </div>
+
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Volumes</h5>
+          <p class="card-text">Create, modify, and explore your volumes, including file contents.</p>
+          <a href="#" class="btn btn-primary">Go there</a>
+        </div>
+      </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import authFetch from '@/utilities/authFetch';
+import {Component, Vue} from 'vue-property-decorator';
+
+@Component
+export default class Dashboard extends Vue {
+  serverLoad: { total_heap_size: number; heap_size_limit: number; } = {
+    total_heap_size: 0,
+    heap_size_limit: 0,
+  };
+
+  async getServerLoad(): Promise<void> {
+    this.serverLoad = await (await authFetch(`${this.$store.state.adminAPIURL}/admin/getServerLoad`)).json();
+  }
+
+  async mounted(): Promise<void> {
+    this.getServerLoad();
+  }
+}
+</script>
