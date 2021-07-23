@@ -32,7 +32,7 @@
         <div class="card-body">
           <h5 class="card-title">Instances</h5>
           <p class="card-text">Create, modify, and explore your VM instances.</p>
-          <a href="#" class="btn btn-primary">Go there</a>
+          <a class="btn btn-primary" @click="$router.push({ name: 'Instances' })">Go there</a>
         </div>
       </div>
 
@@ -40,7 +40,7 @@
         <div class="card-body">
           <h5 class="card-title">Volumes</h5>
           <p class="card-text">Create, modify, and explore your volumes, including file contents.</p>
-          <a href="#" class="btn btn-primary">Go there</a>
+          <a class="btn btn-primary" @click="$router.push({ name: 'Volumes' })">Go there</a>
         </div>
       </div>
     </div>

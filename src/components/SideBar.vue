@@ -41,6 +41,11 @@ export default class SideBar extends Vue {
       icon: 'bi-hdd-stack',
       route: 'Volumes',
     },
+    {
+      title: 'About',
+      icon: 'bi-info-circle',
+      route: 'About',
+    }
   ];
 
   pinnedInstances = [

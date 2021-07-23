@@ -39,7 +39,7 @@ export default class SignIn extends Vue {
     const test = await authFetch(`${this.$store.state.adminAPIURL}/admin/listInstances`);
     if (test.status === 200) {
       this.$store.commit('signedIn', true);
-      this.$router.push({name: 'Home'});
+      this.$router.push({name: 'Dashboard'});
     }
   }
 }
