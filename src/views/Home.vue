@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="card" style="width: 18rem;">
+      <div class="card me-2 mb-2" style="width: 18rem;">
         <div class="card-body">
           <h5 class="card-title">Volumes</h5>
           <p class="card-text">Create, modify, and explore your volumes, including file contents.</p>
