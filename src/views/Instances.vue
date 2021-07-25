@@ -32,6 +32,10 @@
         <i class="bi-pencil-square fs-6"></i>
         Rename
       </button>
+      <button class="btn btn-light me-2" :disabled="selected.length > 1 || !selected.length" @click="duplicateInstance(selected[0])">
+        <i class="bi-node-plus fs-6"></i>
+        Duplicate
+      </button>
       <button class="btn btn-light text-danger" :disabled="!selected.length" @click="deleteInstances(selected)">
         <i class="bi-trash fs-6"></i>
         Delete
@@ -62,7 +66,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" @click="mountVolumes(modalSelectedVolume);" data-bs-dismiss="modal">Mount</button>
+            <button type="button" class="btn btn-primary" @click="mountVolumes(modalSelectedVolume, selected);" data-bs-dismiss="modal">Mount</button>
           </div>
         </div>
       </div>
@@ -83,7 +87,7 @@
         <tbody>
           <tr
             v-for="instance of instances"
-            :key="instance.name"
+            :key="instance._id"
             :class="(selected.includes(instance)) ? 'bg-primary text-white' : ''"
             @click="selectionHandler($event, instance)"
           >
@@ -157,8 +161,8 @@ export default class Instances extends Mixins(refreshAppInfo) {
     }
   }
 
-  async mountVolumes(newVolumeID: string): Promise<void> {
-    for (const instance of this.selected) {
+  async mountVolumes(newVolumeID: string, selected: InstanceI[]): Promise<void> {
+    for (const instance of selected) {
       await authFetch(`${this.$store.state.adminAPIURL}/admin/updateInstance`, {
         method: 'POST',
         headers: {
@@ -216,6 +220,33 @@ export default class Instances extends Mixins(refreshAppInfo) {
 
     await this.getInstances();
   }
+
+  async duplicateInstance(instance: InstanceI): Promise<void> {
+    const newName = await prompt('Duplicated instance name', instance.name);
+
+    if (newName) {
+      const createRes = await authFetch(`${this.$store.state.adminAPIURL}/admin/createInstance`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: newName,
+        }),
+      });
+
+      const resJson = await createRes.json();
+
+      const newInstance: InstanceI = {
+        volumeID: instance.volumeID,
+        name: newName,
+        _id: resJson.instanceID,
+      }
+
+      await this.mountVolumes(instance.volumeID || '', [newInstance]);
+    }
+  }
+
 
   async createInstance(): Promise<void> {
     const newName = await prompt('New instance name');

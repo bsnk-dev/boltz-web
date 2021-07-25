@@ -46,11 +46,11 @@
 
     <div class="d-flex align-items-center">
       <button class="btn btn-primary me-2" @click="createFile()">
-        <i class="bi-plus fs-6"></i>
+        <i class="bi-file-plus fs-6"></i>
         New File
       </button>
       <button class="btn btn-light me-2" @click="createFolder()">
-        <i class="bi-plus fs-6"></i>
+        <i class="bi-folder-plus fs-6"></i>
         New Folder
       </button>
       <button
@@ -80,9 +80,12 @@
     </div>
 
     <div
-      class="table-responsive"
-      @drop="dropHandler($event)"
-      @dragover="$event.preventDefault()"
+      class="table-responsive mt-2"
+      style="min-height: 80vh"
+      @drop="dropHandler($event); dragBorder = false;"
+      @dragover="dragBorder = true; $event.preventDefault();"
+      @dragleave="dragBorder = false"
+      :class="(dragBorder) ? 'border border-primary border-5 rounded' : 'border border-white border-5 rounded'"
     >
       <table
         class="
@@ -169,6 +172,8 @@ export default class Volume extends Mixins(RefreshAppInfo) {
   editing = false;
 
   volumeModified = false;
+
+  dragBorder = false;
 
   listDirectory(): TDataOut[] | Dirent[] {
     return this.fs.readdirSync(this.currentDirectory, { withFileTypes: true });
@@ -309,11 +314,19 @@ export default class Volume extends Mixins(RefreshAppInfo) {
 
     if (!event.dataTransfer) return;
 
-    for (const file of event.dataTransfer.items) {
-      await this.writeFileOrDirectory(
+    const items = event.dataTransfer.items;
+    const totalItems = event.dataTransfer.items.length;
+
+    for (const [index, file] of Object.entries(items)) {
+      this.writeFileOrDirectory(
         file.webkitGetAsEntry(),
         this.currentDirectory
-      );
+      ).then(() => {
+        if (Number(index) == totalItems - 1) {
+          this.currentDirectoryListing = this.listDirectory() as Dirent[];
+        }
+      });
+
       this.volumeModified = true;
     }
 
