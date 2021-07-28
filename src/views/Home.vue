@@ -23,7 +23,9 @@
       </button>
     </div>
 
-    <h3> {{ (serverLoad.total_heap_size / 1024 / 1024).toFixed(1) }} MB out of {{ (serverLoad.heap_size_limit / 1024 / 1024).toFixed(1) }} MB max</h3>
+    <h3> {{ (serverLoad.totalMemoryUsage / 1024 / 1024).toFixed(1) }} MB Memory of {{ (serverLoad.totalMemory / 1024 / 1024).toFixed(1) }} MB Memory</h3>
+    <h3> {{ (serverLoad.totalCPUUsage / 100).toFixed(2) }} vCores of {{ (serverLoad.totalCores) }} vCores</h3>
+    <h3> {{ (serverLoad.vmPackagesSize / 1024 / 1024).toFixed(1) }} MB Storage</h3>
 
     <h4 class="mt-5 mb-2">Things to do</h4>
 
@@ -53,9 +55,12 @@ import {Component, Vue} from 'vue-property-decorator';
 
 @Component
 export default class Dashboard extends Vue {
-  serverLoad: { total_heap_size: number; heap_size_limit: number; } = {
-    total_heap_size: 0,
-    heap_size_limit: 0,
+  serverLoad = {
+    totalMemoryUsage: 0,
+    totalMemory: 0,
+    totalCPUUsage: 0,
+    totalCores: 0,
+    vmPackagesSize: 0,
   };
 
   async getServerLoad(): Promise<void> {

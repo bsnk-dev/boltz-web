@@ -22,6 +22,10 @@
         <i class="bi-plus fs-6"></i>
         Create Volume
       </button>
+      <button class="btn btn-light me-2" :disabled="selected.length > 1 || !selected.length" @click="duplicateVolume(selected[0])">
+        <i class="bi-node-plus fs-6"></i>
+        Duplicate
+      </button>
       <button class="btn btn-light me-2" :disabled="selected.length > 1 || !selected.length" @click="renameVolume(selected[0])">
         <i class="bi-pencil-square fs-6"></i>
         Rename
@@ -95,6 +99,27 @@ export default class Volumes extends Mixins(RefreshAppInfo) {
         body: JSON.stringify({
           name,
           files: '{}'
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+    }
+
+    this.getVolumes();
+  }
+
+  async duplicateVolume(volume: VolumeI): Promise<void> {
+    const name = prompt('New volume name', volume.name);
+
+    const fullVolume = await (await authFetch(`${this.$store.state.adminAPIURL}/admin/getVolume?id=${volume._id}`)).json();
+
+    if (name) {
+      await authFetch(`${this.$store.state.adminAPIURL}/admin/createOrUpdateVolume`, {
+        method: 'POST',
+        body: JSON.stringify({
+          name,
+          files: JSON.stringify(fullVolume.files),
         }),
         headers: {
           'Content-Type': 'application/json'

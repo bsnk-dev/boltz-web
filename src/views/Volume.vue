@@ -74,8 +74,14 @@
         :disabled="!volumeModified"
         @click="saveVolume()"
       >
-        <i class="bi-save fs-6"></i>
-        Save Volume
+        <template v-if="!loading">
+          <i class="bi-save fs-6"></i>
+          Save Volume
+        </template>
+        <template v-else>
+          <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Saving...
+        </template>
       </button>
     </div>
 
@@ -172,6 +178,7 @@ export default class Volume extends Mixins(RefreshAppInfo) {
   editing = false;
 
   volumeModified = false;
+  loading = false;
 
   dragBorder = false;
 
@@ -395,6 +402,9 @@ export default class Volume extends Mixins(RefreshAppInfo) {
   }
 
   async saveVolume(): Promise<void> {
+    if (!this.volumeModified) return;
+    this.loading = true;
+
     const res = await authFetch(
       `${this.$store.state.adminAPIURL}/admin/createOrUpdateVolume`,
       {
@@ -413,6 +423,7 @@ export default class Volume extends Mixins(RefreshAppInfo) {
     if (!res.ok) throw "Failed to save volume!";
 
     this.volumeModified = false;
+    this.loading = false;
   }
 
   saveOpenFile(newFile: { name: string; contents: string}): void {
