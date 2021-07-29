@@ -7,8 +7,8 @@ export default new Vuex.Store({
   state: {
     signedIn: false,
     basicAuthString: '',
-    adminAPIURL: 'http://localhost:5000',
-    executionAPIURL: 'http://localhost:8000',
+    adminAPIURL: (Vue.config.devtools) ? 'http://' + window.location.hostname + ':5000' : '',
+    executionAPIURL: '',
     instances: [],
     volumes: [],
   },
@@ -24,7 +24,10 @@ export default new Vuex.Store({
     },
     setVolumes (state, volumes) {
       state.volumes = volumes
-    }
+    },
+    setExecutionAPIURL (state, executionAPIURL) {
+      state.executionAPIURL = executionAPIURL
+    },
   },
   getters: {
     isSignedIn (state) {

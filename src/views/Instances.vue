@@ -273,9 +273,17 @@ export default class Instances extends Mixins(refreshAppInfo) {
     (on) ? modal.show() : modal.hide();
   }
 
+  async getExecutionPort(): Promise<void> {
+    const portRaw = await authFetch(`${this.$store.state.adminAPIURL}/admin/getExecutionPort`);
+    const port = await portRaw.json();
+
+    this.$store.commit('setExecutionAPIURL', location.protocol + '//' + location.hostname + ':' + port.executionPort);
+  }
+
   async mounted(): Promise<void> {
     await this.getVolumes();
     await this.getInstances();
+    await this.getExecutionPort();
 
     this.loaded = true;
   }
