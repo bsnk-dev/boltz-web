@@ -1,5 +1,7 @@
 # boltz-web
 
+### This is a placeholder, I'll flesh it out eventually.
+
 ## Project setup
 ```
 npm install
