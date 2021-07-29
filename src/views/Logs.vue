@@ -22,6 +22,10 @@
         <i class="bi-arrow-clockwise fs-6"></i>
         Refresh
       </button>
+      <button class="btn btn-light me-2 text-danger" @click="deleteLogs(instance._id)">
+        <i class="bi-trash fs-6 text-danger"></i>
+        Wipe Logs
+      </button>
     </div>
 
     <div class="table-responsive">
@@ -81,6 +85,13 @@ export default class Logs extends Mixins(RefreshAppInfo) {
   async loadLogs(instanceID: string): Promise<void> {
     const logs = await authFetch(`${this.$store.state.adminAPIURL}/admin/getLogs?id=${instanceID}`);
     this.logs = (await logs.json()).sort((a: LogI, b: LogI) => b.timestamp - a.timestamp);
+  }
+
+  async deleteLogs(instanceID: string): Promise<void> {
+    if (!confirm('Are you sure you want to wipe all logs for this instance?')) return;
+
+    await authFetch(`${this.$store.state.adminAPIURL}/admin/deleteLogs?id=${instanceID}`);
+    this.loadLogs(instanceID);
   }
 
   async mounted(): Promise<void> {

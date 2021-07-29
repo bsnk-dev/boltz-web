@@ -7,6 +7,7 @@
           :key="item.route"
         >
           <a 
+            style="cursor: pointer;"
             :class="($route.name == item.route) ? 'nav-link active' : 'nav-link'"
             class="d-flex align-items-center" 
             @click="$router.push({name: item.route})">
